@@ -1,14 +1,17 @@
 'use strict';
 
-require('dotenv').config()
+require('dotenv').config()                // require hidden .env for sensitive info
 const request = require('request')
 const fs = require('fs');
+
+// pull from hidden .env to prevent uploading user & token
 const gitUser = process.env.GIT_USER
 const gitToken = process.env.TOKEN
 const input = process.argv.slice(2)
 
 
-console.log("Welcome to the Github Avatar Downloader!")
+
+console.log("====== Welcome to the Github Avatar Downloader! ======")
 
 function getRepoContributors(repoOwner, repoName, cb){
   const requestURL = 'https://'+ gitUser + ':' + gitToken
@@ -17,6 +20,7 @@ function getRepoContributors(repoOwner, repoName, cb){
 
   request.get({
     url: requestURL,
+    // site requires validation found here under headers
     headers: {
       'User-Agent': 'Ron Burgundy'
     }
@@ -26,19 +30,18 @@ function getRepoContributors(repoOwner, repoName, cb){
   })
 }
 
+// only fires if argv input has 2 values, i.e. user && token
 if (input.length === 2){
   getRepoContributors(input[0], input[1], function(result) {
     result.forEach(function(user){
-      // console.log("Result:", user['avatar_url'])
       downloadImageByURL(user['avatar_url'], 'avatars/' + user['login'] + '.jpg')
     })
   })
 } else {
-  console.log("Please try again and input the Owner and Repo!")
+  console.log("Please try again with the Owner and Repo information")
 }
 
 function downloadImageByURL(url, filePath) {
-  // const = 'avatars/'
   request.get(url)
        .on('error', function (err) {
          throw err;
@@ -48,5 +51,3 @@ function downloadImageByURL(url, filePath) {
        })
        .pipe(fs.createWriteStream(filePath));
 }
-
-// downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
