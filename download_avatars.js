@@ -34,7 +34,7 @@ if (input.length === 2){
     })
   })
 } else {
-  console.log("Please input the Owner and Repo")
+  console.log("Please try again and input the Owner and Repo!")
 }
 
 function downloadImageByURL(url, filePath) {
