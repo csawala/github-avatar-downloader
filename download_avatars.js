@@ -5,6 +5,7 @@ const request = require('request')
 const fs = require('fs');
 const gitUser = process.env.GIT_USER
 const gitToken = process.env.TOKEN
+const input = process.argv.slice(2)
 
 
 console.log("Welcome to the Github Avatar Downloader!")
@@ -25,7 +26,7 @@ function getRepoContributors(repoOwner, repoName, cb){
   })
 }
 
-getRepoContributors("jquery", "jquery", function(result) {
+getRepoContributors(input[0], input[1], function(result) {
   result.forEach(function(user){
     // console.log("Result:", user['avatar_url'])
     downloadImageByURL(user['avatar_url'], 'avatars/' + user['login'] + '.jpg')
