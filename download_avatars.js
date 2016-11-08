@@ -26,12 +26,16 @@ function getRepoContributors(repoOwner, repoName, cb){
   })
 }
 
-getRepoContributors(input[0], input[1], function(result) {
-  result.forEach(function(user){
-    // console.log("Result:", user['avatar_url'])
-    downloadImageByURL(user['avatar_url'], 'avatars/' + user['login'] + '.jpg')
+if (input.length === 2){
+  getRepoContributors(input[0], input[1], function(result) {
+    result.forEach(function(user){
+      // console.log("Result:", user['avatar_url'])
+      downloadImageByURL(user['avatar_url'], 'avatars/' + user['login'] + '.jpg')
+    })
   })
-})
+} else {
+  console.log("Please input the Owner and Repo")
+}
 
 function downloadImageByURL(url, filePath) {
   // const = 'avatars/'
